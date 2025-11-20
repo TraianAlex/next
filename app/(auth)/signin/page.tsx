@@ -2,6 +2,7 @@
 
 import { useActionState, startTransition } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import toast from 'react-hot-toast'
 import { ActionResponse, signIn } from '@/app/actions/auth';
 
@@ -109,6 +110,14 @@ export default function SignIn() {
                 Sign In
               </button>
             </form>
+          </div>
+          <div className='mt-4'>
+            <Link
+              href='/signup'
+              className='text-sm text-zinc-600 underline transition-colors hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50'
+            >
+              Don&apos;t have an account? Sign up
+            </Link>
           </div>
         </div>
       </main>
