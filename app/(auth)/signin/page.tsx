@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react';
+import { useActionState, startTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast'
 import { ActionResponse, signIn } from '@/app/actions/auth';
@@ -24,8 +24,14 @@ export default function SignIn() {
       // Handle successful submission
       if (result.success) {
         toast.success('Signed in successfully')
-        router.push('/dashboard')
-        router.refresh()
+        // Use startTransition to handle navigation after state update
+        // Small delay ensures cookies are set before navigation
+        startTransition(() => {
+          router.refresh()
+          setTimeout(() => {
+            router.push('/dashboard')
+          }, 150)
+        })
       }
 
       return result

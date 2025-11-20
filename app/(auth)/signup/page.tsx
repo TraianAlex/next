@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState } from 'react';
+import { useActionState, startTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast'
@@ -24,18 +24,15 @@ export default function SignUp() {
       // Handle successful submission
       if (result.success) {
         toast.success('Account created successfully')
-        router.push('/dashboard')
-        // router.refresh()
+        // Use startTransition to handle navigation after state update
+        // Small delay ensures cookies are set before navigation
+        startTransition(() => {
+          router.refresh()
+          setTimeout(() => {
+            router.push('/dashboard')
+          }, 150)
+        })
       }
-      // Ensure errors is in the correct format
-      // const response: ActionResponse = {
-      //   success: result.success,
-      //   message: result.message,
-      //   errors: Array.isArray(result.errors) ? undefined : (result.errors as Record<string, string[]> | undefined),
-      //   error: Array.isArray(result.errors) ? result.errors[0] : undefined,
-      // }
-
-      // return response
       return result as unknown as ActionResponse;
     } catch (err) {
       return {
