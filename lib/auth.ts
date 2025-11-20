@@ -6,7 +6,6 @@ import { users } from '@/db/schema'
 import * as jose from 'jose'
 import { cache } from 'react'
 
-// JWT types
 interface JWTPayload {
   userId: string
   [key: string]: string | number | boolean | null | undefined
@@ -17,23 +16,19 @@ const JWT_SECRET = new TextEncoder().encode(
   process.env.JWT_SECRET || 'your-secret-key-min-32-chars-long!!!'
 )
 
-// JWT expiration time
 const JWT_EXPIRATION = '7d' // 7 days
 
 // Token refresh threshold (refresh if less than this time left)
 const REFRESH_THRESHOLD = 24 * 60 * 60 // 24 hours in seconds
 
-// Hash a password
 export async function hashPassword(password: string) {
   return hash(password, 10)
 }
 
-// Verify a password
 export async function verifyPassword(password: string, hashedPassword: string) {
   return compare(password, hashedPassword)
 }
 
-// Create a new user
 export async function createUser(email: string, password: string) {
   const hashedPassword = await hashPassword(password)
   const id = nanoid()
@@ -52,7 +47,6 @@ export async function createUser(email: string, password: string) {
   }
 }
 
-// Generate a JWT token
 export async function generateJWT(payload: JWTPayload) {
   return await new jose.SignJWT(payload)
     .setProtectedHeader({ alg: 'HS256' })
@@ -61,7 +55,6 @@ export async function generateJWT(payload: JWTPayload) {
     .sign(JWT_SECRET)
 }
 
-// Verify a JWT token
 export async function verifyJWT(token: string): Promise<JWTPayload | null> {
   try {
     const { payload } = await jose.jwtVerify(token, JWT_SECRET)
@@ -72,7 +65,6 @@ export async function verifyJWT(token: string): Promise<JWTPayload | null> {
   }
 }
 
-// Check if token needs refresh
 export async function shouldRefreshToken(token: string): Promise<boolean> {
   try {
     const { payload } = await jose.jwtVerify(token, JWT_SECRET, {

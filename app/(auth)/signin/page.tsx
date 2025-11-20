@@ -21,8 +21,6 @@ export default function SignIn() {
   >(async (prevState: ActionResponse, formData: FormData) => {
     try {
       const result = await signIn(formData)
-
-      // Handle successful submission
       if (result.success) {
         toast.success('Signed in successfully')
         // Use startTransition to handle navigation after state update

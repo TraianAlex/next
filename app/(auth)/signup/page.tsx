@@ -21,7 +21,6 @@ export default function SignUp() {
   >(async (prevState: ActionResponse, formData: FormData): Promise<ActionResponse> => {
     try {
       const result = await signUp(formData)
-      // Handle successful submission
       if (result.success) {
         toast.success('Account created successfully')
         // Use startTransition to handle navigation after state update
