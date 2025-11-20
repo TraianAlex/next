@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import SideNavigation from '@/app/components/SideNavigation';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -10,6 +11,11 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return (
+    <div className='flex min-h-screen'>
+      <SideNavigation />
+      <div className='flex-1'>{children}</div>
+    </div>
+  );
 }
 
