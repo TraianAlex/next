@@ -3,14 +3,14 @@ import { getSession } from './auth'
 import { eq } from 'drizzle-orm'
 import { cache } from 'react'
 import { issues, users } from '@/db/schema'
-import { mockDelay } from './utils'
+// import { mockDelay } from './utils'
 import {
   unstable_cacheTag as cacheTag,
   // unstable_cacheLife as cacheLife,
 } from 'next/cache'
 
 export const getCurrentUser = cache(async () => {
-  await mockDelay(1000)
+  // await mockDelay(1000)
   const session = await getSession()
   if (!session) {
     return null
@@ -46,7 +46,7 @@ export async function getIssues() {
   'use cache'
   cacheTag('issues')
   try {
-    await mockDelay(1000)
+    // await mockDelay(1000)
     const result = await db.query.issues.findMany({
       with: {
         user: true,
@@ -63,7 +63,7 @@ export async function getIssues() {
 
 export const getIssue = async (id: number) => {
   try {
-    await mockDelay(700)
+    // await mockDelay(700)
     const issue = await db.query.issues.findFirst({
       where: eq(issues.id, id),
       with: {

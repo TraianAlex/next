@@ -5,7 +5,7 @@ import { issues } from '@/db/schema'
 import { eq } from 'drizzle-orm'
 import { getCurrentUser } from '@/lib/dal'
 import { z } from 'zod'
-import { mockDelay } from '@/lib/utils'
+// import { mockDelay } from '@/lib/utils'
 import { revalidateTag } from 'next/cache'
 
 // Define Zod schema for issue validation
@@ -133,7 +133,7 @@ export const updateIssue = async (id: number, data: Partial<IssueData>) => {
 export async function deleteIssue(id: number) {
   try {
     // Security check - ensure user is authenticated
-    await mockDelay(700)
+    // await mockDelay(700)
     const user = await getCurrentUser()
     if (!user) {
       throw new Error('Unauthorized')
