@@ -12,6 +12,12 @@ export default function Navigation() {
             Home
           </Link>
           <Link
+            href='/dashboard'
+            className='text-base font-medium text-zinc-900 transition-colors hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300'
+          >
+            Dashboard
+          </Link>
+          <Link
             href='/todos'
             className='text-base font-medium text-zinc-900 transition-colors hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300'
           >
@@ -38,10 +44,10 @@ export default function Navigation() {
             Sign In
           </Link>
           <Link
-            href='/signout'
+            href='/signup'
             className='text-base font-medium text-zinc-900 transition-colors hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300'
           >
-            Sign Out
+            Sign Up
           </Link>
         </div>
       </div>
