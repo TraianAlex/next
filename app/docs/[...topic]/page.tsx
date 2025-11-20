@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 interface DocsPageProps {
   params: Promise<{
@@ -30,7 +31,17 @@ const docsContent: Record<string, { title: string; description: string; content:
   },
 };
 
-export default async function DocsPage({ params }: DocsPageProps) {
+// Generate static params for known routes
+export async function generateStaticParams() {
+  return [
+    { topic: ['getting-started'] },
+    { topic: ['api'] },
+    { topic: ['examples'] },
+    { topic: ['faq'] },
+  ];
+}
+
+async function DocsContent({ params }: DocsPageProps) {
   const { topic } = await params;
   const topicPath = topic.join('/');
   const topicKey = topic[0]; // Get the first segment as the main topic
@@ -99,6 +110,25 @@ export default async function DocsPage({ params }: DocsPageProps) {
         </div>
       </main>
     </div>
+  );
+}
+
+export default async function DocsPage({ params }: DocsPageProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className='flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black'>
+          <main className='flex min-h-screen w-full max-w-3xl flex-col items-start justify-start py-32 px-16 bg-white dark:bg-black'>
+            <div className='mb-8 flex w-full flex-col gap-4'>
+              <div className='h-8 w-48 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse' />
+              <div className='h-6 w-64 bg-zinc-200 dark:bg-zinc-800 rounded animate-pulse' />
+            </div>
+          </main>
+        </div>
+      }
+    >
+      <DocsContent params={params} />
+    </Suspense>
   );
 }
 
