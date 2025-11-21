@@ -5,7 +5,7 @@ import { cache } from 'react'
 import { issues, users } from '@/db/schema'
 // import { mockDelay } from './utils'
 import {
-  unstable_cacheTag as cacheTag,
+  cacheTag,
   // unstable_cacheLife as cacheLife,
 } from 'next/cache'
 

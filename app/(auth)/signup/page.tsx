@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, startTransition } from 'react';
+import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast'
@@ -23,14 +23,8 @@ export default function SignUp() {
       const result = await signUp(formData)
       if (result.success) {
         toast.success('Account created successfully')
-        // Use startTransition to handle navigation after state update
-        // Small delay ensures cookies are set before navigation
-        startTransition(() => {
+          router.push('/dashboard')
           router.refresh()
-          setTimeout(() => {
-            router.push('/dashboard')
-          }, 150)
-        })
       }
       return result as unknown as ActionResponse;
     } catch (err) {
@@ -125,7 +119,7 @@ export default function SignUp() {
               <button
                 type='submit'
                 disabled={isPending}
-                className='mt-2 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200'
+                className='mt-2 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-500'
               >
                 {isPending ? 'Creating Account...' : 'Sign Up'}
               </button>

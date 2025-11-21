@@ -1,6 +1,6 @@
 'use client'
 
-import { useActionState, startTransition } from 'react';
+import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import toast from 'react-hot-toast'
@@ -23,14 +23,8 @@ export default function SignIn() {
       const result = await signIn(formData)
       if (result.success) {
         toast.success('Signed in successfully')
-        // Use startTransition to handle navigation after state update
-        // Small delay ensures cookies are set before navigation
-        startTransition(() => {
+          router.push('/dashboard')
           router.refresh()
-          setTimeout(() => {
-            router.push('/dashboard')
-          }, 150)
-        })
       }
 
       return result
@@ -103,7 +97,7 @@ export default function SignIn() {
               </div>
               <button
                 type='submit'
-                className='mt-2 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200'
+                className='mt-2 rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 dark:bg-zinc-800 dark:text-zinc-100 dark:hover:bg-zinc-500'
               >
                 Sign In
               </button>

@@ -80,7 +80,7 @@ export const createIssue = async (data: IssueData) => {
   }
 }
 
-export const updateIssue = async (id: number, data: Partial<IssueData>) => {
+export const updateIssue = async (id: number, data: Partial<IssueData>): Promise<ActionResponse> => {
   try {
     const user = await getCurrentUser()
 
@@ -99,7 +99,7 @@ export const updateIssue = async (id: number, data: Partial<IssueData>) => {
       return {
         success: false,
         message: 'Invalid issue',
-        error: validationResult.error.flatten().fieldErrors,
+        errors: validationResult.error.flatten().fieldErrors,
       }
     }
 
