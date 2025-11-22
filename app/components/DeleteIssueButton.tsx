@@ -24,6 +24,7 @@ export default function DeleteIssueButton({ id }: DeleteIssueButtonProps) {
           throw new Error(result.error || 'Failed to delete issue')
         }
 
+        setShowConfirm(false);
         toast.success('Issue deleted successfully')
         router.push('/dashboard')
         router.refresh()

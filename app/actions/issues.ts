@@ -119,6 +119,7 @@ export const updateIssue = async (id: number, data: Partial<IssueData>): Promise
     // Update issue
     await db.update(issues).set(updateData).where(eq(issues.id, id))
 
+    revalidateTag('issues', 'default')
     return { success: true, message: 'Issue updated successfully' }
   } catch (e) {
     console.error('Error updating issue:', e)
@@ -142,6 +143,7 @@ export async function deleteIssue(id: number) {
     // Delete issue
     await db.delete(issues).where(eq(issues.id, id))
 
+    revalidateTag('issues', 'default')
     return { success: true, message: 'Issue deleted successfully' }
   } catch (error) {
     console.error('Error deleting issue:', error)

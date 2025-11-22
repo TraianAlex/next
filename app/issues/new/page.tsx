@@ -1,11 +1,12 @@
+import { Suspense } from 'react'
 import { ArrowLeftIcon } from 'lucide-react'
 import Link from 'next/link'
-import { Suspense } from 'react'
+
 import NewIssue from '@/app/components/NewIssue'
 
 export default async function NewIssuePage() {
   return (
-    <div className="max-w-3xl mx-auto p-4 md:p-8">
+    <div className="max-w-3xl mx-auto p-4 md:p-8 mt-8">
       <Link
         href="/dashboard"
         className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 mb-6"
