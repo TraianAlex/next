@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { PlusIcon, Trash2Icon, Edit2Icon, CheckIcon } from 'lucide-react'
 import { formatRelativeTime } from '@/lib/utils'
+import TodoForm from './TodoForm'
 
 export interface Todo {
   id: string
@@ -142,65 +143,19 @@ export default function TodoList() {
 
       {/* Add Form */}
       {isAdding && (
-        <div className="mb-6 p-4 border border-gray-200 dark:border-dark-border-default rounded-lg bg-white dark:bg-dark-high">
-          <div className="space-y-4">
-            <div>
-              <input
-                type="text"
-                placeholder="Todo title..."
-                value={formData.title}
-                onChange={(e) =>
-                  setFormData({ ...formData, title: e.target.value })
-                }
-                className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border-medium rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                autoFocus
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    e.preventDefault()
-                    if (editingId) {
-                      handleUpdate(editingId)
-                    } else {
-                      handleAdd()
-                    }
-                  } else if (e.key === 'Escape') {
-                    cancelEditing()
-                  }
-                }}
-              />
-            </div>
-            <div>
-              <textarea
-                placeholder="Description (optional)..."
-                value={formData.description}
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border-medium rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  if (editingId) {
-                    handleUpdate(editingId)
-                  } else {
-                    handleAdd()
-                  }
-                }}
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md transition-colors"
-              >
-                {editingId ? 'Update' : 'Add'}
-              </button>
-              <button
-                onClick={cancelEditing}
-                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
+        <TodoForm
+          title={formData.title}
+          description={formData.description}
+          onTitleChange={(title) =>
+            setFormData({ ...formData, title })
+          }
+          onDescriptionChange={(description) =>
+            setFormData({ ...formData, description })
+          }
+          onSubmit={handleAdd}
+          onCancel={cancelEditing}
+          isEditing={false}
+        />
       )}
 
       {/* Todos List */}
@@ -227,60 +182,33 @@ export default function TodoList() {
               key={todo.id}
               className={`p-4 border rounded-lg transition-colors ${
                 todo.completed
-                  ? 'bg-gray-50 dark:bg-dark-elevated border-gray-200 dark:border-dark-border-default opacity-75'
-                  : 'bg-white dark:bg-dark-high border-gray-200 dark:border-dark-border-default hover:border-gray-300 dark:hover:border-dark-border-medium'
+                  ? 'bg-gray-900 dark:bg-dark-elevated border-gray-400 dark:border-dark-border-default opacity-75'
+                  : 'bg-gray-900 dark:bg-dark-high border-gray-600 dark:border-dark-border-default hover:border-gray-300 dark:hover:border-dark-border-medium'
               }`}
             >
               {editingId === todo.id ? (
-                <div className="space-y-3">
-                  <input
-                    type="text"
-                    value={formData.title}
-                    onChange={(e) =>
-                      setFormData({ ...formData, title: e.target.value })
-                    }
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border-medium rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    autoFocus
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter') {
-                        e.preventDefault()
-                        handleUpdate(todo.id)
-                      } else if (e.key === 'Escape') {
-                        cancelEditing()
-                      }
-                    }}
-                  />
-                  <textarea
-                    value={formData.description}
-                    onChange={(e) =>
-                      setFormData({ ...formData, description: e.target.value })
-                    }
-                    rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-dark-border-medium rounded-md bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleUpdate(todo.id)}
-                      className="px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm transition-colors"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={cancelEditing}
-                      className="px-3 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-md text-sm transition-colors"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
+                <TodoForm
+                  title={formData.title}
+                  description={formData.description}
+                  onTitleChange={(title) =>
+                    setFormData({ ...formData, title })
+                  }
+                  onDescriptionChange={(description) =>
+                    setFormData({ ...formData, description })
+                  }
+                  onSubmit={() => handleUpdate(todo.id)}
+                  onCancel={cancelEditing}
+                  isEditing={true}
+                  compact={true}
+                />
               ) : (
-                <div className="flex items-start gap-3">
+                <div className="bg-gray-900 dark:bg-dark-base flex items-start gap-3">
                   <button
                     onClick={() => handleToggleComplete(todo.id)}
                     className={`mt-1 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
                       todo.completed
                         ? 'bg-green-500 border-green-500'
-                        : 'border-gray-300 dark:border-gray-600 hover:border-green-500'
+                        : 'border-gray-500 dark:border-gray-500 hover:border-green-500'
                     }`}
                   >
                     {todo.completed && (
@@ -289,9 +217,9 @@ export default function TodoList() {
                   </button>
                   <div className="flex-1 min-w-0">
                     <h3
-                      className={`font-medium text-gray-900 dark:text-gray-500 ${
+                      className={`font-medium text-gray-200 dark:text-gray-200 ${
                         todo.completed
-                          ? 'line-through text-gray-500 dark:text-gray-500'
+                          ? 'line-through text-gray-300 dark:text-gray-300'
                           : ''
                       }`}
                     >
@@ -299,30 +227,30 @@ export default function TodoList() {
                     </h3>
                     {todo.description && (
                       <p
-                        className={`mt-1 text-sm text-gray-600 dark:text-gray-400 ${
+                        className={`mt-1 text-sm text-gray-300 dark:text-gray-300 ${
                           todo.completed
-                            ? 'line-through text-gray-400 dark:text-gray-500'
+                            ? 'line-through text-gray-400 dark:text-gray-400'
                             : ''
                         }`}
                       >
                         {todo.description}
                       </p>
                     )}
-                    <p className="mt-2 text-xs text-gray-400 dark:text-gray-500">
+                    <p className="mt-2 text-xs text-gray-400 dark:text-gray-400">
                       {formatRelativeTime(new Date(todo.createdAt))}
                     </p>
                   </div>
                   <div className="flex gap-2 flex-shrink-0">
                     <button
                       onClick={() => startEditing(todo)}
-                      className="p-2 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+                      className="p-2 text-gray-300 hover:text-blue-500 dark:text-gray-300 dark:hover:text-blue-400 transition-colors"
                       title="Edit"
                     >
                       <Edit2Icon size={16} />
                     </button>
                     <button
                       onClick={() => handleDelete(todo.id)}
-                      className="p-2 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors"
+                      className="p-2 text-gray-300 hover:text-red-500 dark:text-gray-300 dark:hover:text-red-400 transition-colors"
                       title="Delete"
                     >
                       <Trash2Icon size={16} />
