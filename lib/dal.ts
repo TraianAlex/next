@@ -5,7 +5,7 @@ import { cache } from 'react'
 import { issues, users } from '@/db/schema'
 import { mockDelay } from './utils'
 import {
-  // cacheTag,
+  cacheTag,
   // unstable_cacheLife as cacheLife,
 } from 'next/cache'
 
@@ -43,9 +43,8 @@ export const getUserByEmail = async (email: string) => {
 }
 
 export async function getIssues() {
-  //'use cache'
-  //cacheTag('issues')
-  console.log('environment', process.env.NODE_ENV)
+  'use cache'
+  cacheTag('issues')
   try {
     await mockDelay(1000)
     const result = await db.query.issues.findMany({
