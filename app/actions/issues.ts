@@ -6,7 +6,7 @@ import { eq } from 'drizzle-orm'
 import { getCurrentUser } from '@/lib/dal'
 import { z } from 'zod'
 // import { mockDelay } from '@/lib/utils'
-import { revalidateTag } from 'next/cache'
+// import { revalidateTag } from 'next/cache'
 
 // Define Zod schema for issue validation
 const IssueSchema = z.object({
@@ -68,7 +68,7 @@ export const createIssue = async (data: IssueData) => {
       userId: validatedData.userId,
     })
 
-    revalidateTag('issues', 'default')
+    // revalidateTag('issues', 'default')
     return { success: true, message: 'Issue created successfully' }
   } catch (error) {
     console.error('Error creating issue:', error)
@@ -119,7 +119,7 @@ export const updateIssue = async (id: number, data: Partial<IssueData>): Promise
     // Update issue
     await db.update(issues).set(updateData).where(eq(issues.id, id))
 
-    revalidateTag('issues', 'default')
+    // revalidateTag('issues', 'default')
     return { success: true, message: 'Issue updated successfully' }
   } catch (e) {
     console.error('Error updating issue:', e)
@@ -143,7 +143,7 @@ export async function deleteIssue(id: number) {
     // Delete issue
     await db.delete(issues).where(eq(issues.id, id))
 
-    revalidateTag('issues', 'default')
+    // revalidateTag('issues', 'default')
     return { success: true, message: 'Issue deleted successfully' }
   } catch (error) {
     console.error('Error deleting issue:', error)
