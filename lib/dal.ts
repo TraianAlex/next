@@ -1,13 +1,14 @@
 import { db } from '@/db'
-import { getSession } from './auth'
 import { eq } from 'drizzle-orm'
 import { cache } from 'react'
-import { issues, users } from '@/db/schema'
-import { mockDelay } from './utils'
 import {
   cacheTag,
   // unstable_cacheLife as cacheLife,
 } from 'next/cache'
+
+import { getSession } from './auth'
+import { issues, users } from '@/db/schema'
+import { mockDelay } from './utils'
 
 export const getCurrentUser = cache(async () => {
   await mockDelay(1000)
@@ -42,7 +43,7 @@ export const getUserByEmail = async (email: string) => {
   }
 }
 
-export async function getIssues() {
+export async function getIssues(userId: string) {
   'use cache'
   cacheTag('issues')
   try {
@@ -51,6 +52,7 @@ export async function getIssues() {
       with: {
         user: true,
       },
+      where: eq(issues.userId, userId),
       orderBy: (issues, { desc }) => [desc(issues.createdAt)],
     })
 

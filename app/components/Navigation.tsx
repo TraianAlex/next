@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 import { getCurrentUser } from '@/lib/dal';
 import SignOutButton from './SignOutButton';
 
@@ -15,12 +16,14 @@ export default async function Navigation() {
           >
             Home
           </Link>
+          {user && (
           <Link
             href='/dashboard'
             className='text-base font-medium text-zinc-900 transition-colors hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300'
           >
-            Dashboard
-          </Link>
+              Dashboard
+            </Link>
+          )}
           <Link
             href='/todos'
             className='text-base font-medium text-zinc-900 transition-colors hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300'

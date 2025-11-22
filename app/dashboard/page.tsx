@@ -1,15 +1,19 @@
 import { getCurrentUser, getIssues } from '@/lib/dal'
 import { PlusIcon } from 'lucide-react'
 import Link from 'next/link'
+import { notFound } from 'next/navigation'
+
 import { Priority, Status } from '@/lib/types'
 import { ISSUE_PRIORITY, ISSUE_STATUS } from '@/db/schema'
 import { formatRelativeTime } from '@/lib/utils'
-
 import Badge from '../components/ui/Badge'
 
-export default async function Dashboard() {
-  await getCurrentUser()
-  const issues = await getIssues()
+export default async function Dashboard() {  
+  const user = await getCurrentUser()
+  if (!user) {
+    notFound()
+  }
+  const issues = await getIssues(user!.id)
 
   return (
     <div className="mt-8 px-4">

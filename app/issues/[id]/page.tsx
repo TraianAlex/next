@@ -1,21 +1,23 @@
-import { getIssue } from '@/lib/dal'
-import { formatRelativeTime } from '@/lib/utils'
-import { Priority, Status } from '@/lib/types'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import Badge from '@/app/components/ui/Badge'
 import { ArrowLeftIcon, Edit2Icon } from 'lucide-react'
+
+import { getCurrentUser, getIssue } from '@/lib/dal'
+import { formatRelativeTime } from '@/lib/utils'
+import { Priority, Status } from '@/lib/types'
+import Badge from '@/app/components/ui/Badge'
 import DeleteIssueButton from '@/app/components/DeleteIssueButton'
 
 const IssuePage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
+  const user = await getCurrentUser()
   const issue = await getIssue(parseInt(id))
 
-  if (!issue) {
+  if (!issue || issue.userId !== user?.id) {
     notFound()
   }
 
-  const { title, description, status, priority, createdAt, updatedAt, user } =
+  const { title, description, status, priority, createdAt, updatedAt, user: issueUser } =
     issue
 
   const getStatusLabel = (status: string) => {
@@ -104,7 +106,7 @@ const IssuePage = async ({ params }: { params: Promise<{ id: string }> }) => {
             <p className="text-sm font-medium text-gray-500 mb-1">
               Assigned to
             </p>
-            <p className="text-gray-300 dark:text-gray-300">{user.email}</p>
+            <p className="text-gray-300 dark:text-gray-300">{issueUser?.email}</p>
           </div>
           <div>
             <p className="text-sm font-medium text-gray-500 mb-1">Status</p>
