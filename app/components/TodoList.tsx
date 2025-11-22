@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { PlusIcon, Trash2Icon, Edit2Icon, CheckIcon } from 'lucide-react'
 import { formatRelativeTime } from '@/lib/utils'
 import TodoForm from './TodoForm'
@@ -16,7 +16,7 @@ export interface Todo {
 
 const STORAGE_KEY = 'todos-app-data'
 
-// Load todos from localStorage (lazy initialization)
+// Load todos from localStorage
 function loadTodosFromStorage(): Todo[] {
   if (typeof window === 'undefined') return []
   const stored = localStorage.getItem(STORAGE_KEY)
@@ -32,14 +32,29 @@ function loadTodosFromStorage(): Todo[] {
 }
 
 export default function TodoList() {
-  const [todos, setTodos] = useState<Todo[]>(loadTodosFromStorage)
+  const [todos, setTodos] = useState<Todo[]>([])
   const [editingId, setEditingId] = useState<string | null>(null)
   const [isAdding, setIsAdding] = useState(false)
   const [formData, setFormData] = useState({ title: '', description: '' })
+  const hasLoadedRef = useRef(false)
 
-  // Save todos to localStorage whenever todos change
+  // Load todos from localStorage only after component mounts (client-side)
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+    const loadedTodos = loadTodosFromStorage()
+    hasLoadedRef.current = true
+    // Use setTimeout to defer state update and avoid synchronous setState warning
+    if (loadedTodos.length > 0) {
+      setTimeout(() => {
+        setTodos(loadedTodos)
+      }, 0)
+    }
+  }, [])
+
+  // Save todos to localStorage whenever todos change (only after initial load)
+  useEffect(() => {
+    if (hasLoadedRef.current) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+    }
   }, [todos])
 
   const handleAdd = () => {
@@ -123,7 +138,7 @@ export default function TodoList() {
     <div className="w-full max-w-4xl mx-auto mt-8 px-4">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-500">
+          <h1 className="text-2xl font-bold text-gray-300 dark:text-gray-300">
             Todos
           </h1>
           {totalCount > 0 && (
@@ -160,7 +175,7 @@ export default function TodoList() {
 
       {/* Todos List */}
       {todos.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-12 text-center border border-gray-200 dark:border-dark-border-default rounded-lg bg-white dark:bg-dark-high p-8">
+        <div className="bg-gray-900 dark:bg-gray-900 flex flex-col items-center justify-center py-12 text-center border border-gray-500 dark:border-dark-border-default rounded-lg bg-white dark:bg-dark-high p-8">
           <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-gray-100">
             No todos yet
           </h3>
