@@ -2,6 +2,7 @@
 
 import { signOut } from '@/app/actions/auth';
 import { useFormStatus } from 'react-dom';
+import { LogOutIcon } from 'lucide-react';
 
 interface SignOutButtonProps {
   className?: string;
@@ -13,7 +14,7 @@ function SignOutForm({ className, variant }: SignOutButtonProps) {
 
   const baseClasses = variant === 'button'
     ? 'rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200'
-    : 'text-base font-medium text-zinc-900 transition-colors hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300';
+    : 'flex items-center w-full px-2 py-2 text-sm font-medium transition-colors hover:text-zinc-200 dark:text-zinc-400 dark:hover:text-zinc-200';
 
   return (
     <button
@@ -21,6 +22,7 @@ function SignOutForm({ className, variant }: SignOutButtonProps) {
       disabled={pending}
       className={`${baseClasses} ${className}`}
     >
+      <LogOutIcon size={20} className="mr-2" />
       {pending ? 'Signing out...' : 'Sign Out'}
     </button>
   );
