@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Trash2Icon } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { deleteIssue } from '@/app/actions/issues'
+import Button from './ui/Button'
 
 interface DeleteIssueButtonProps {
   id: number
@@ -38,30 +39,32 @@ export default function DeleteIssueButton({ id }: DeleteIssueButtonProps) {
   if (showConfirm) {
     return (
       <div className="flex items-center space-x-2">
-        <button
-          className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 mb-4"
+        <Button
+          variant="outline"
+          size="sm"
           onClick={() => setShowConfirm(false)}
           disabled={isPending}
         >
           Cancel
-        </button>
-        <button
-          className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 mb-4"
+        </Button>
+        <Button
+          variant="danger"
+          size="sm"
           onClick={handleDelete}
-          disabled={isPending}
+          isLoading={isPending}
         >
           Delete
-        </button>
+        </Button>
       </div>
     )
   }
 
   return (
-    <button className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 mb-4" onClick={() => setShowConfirm(true)}>
+    <Button variant="outline" size="sm" onClick={() => setShowConfirm(true)}>
       <span className="flex items-center">
         <Trash2Icon size={16} className="mr-1" />
         Delete
       </span>
-    </button>
+    </Button>
   )
 }

@@ -7,6 +7,7 @@ import { formatRelativeTime } from '@/lib/utils'
 import { Priority, Status } from '@/lib/types'
 import Badge from '@/app/components/ui/Badge'
 import DeleteIssueButton from '@/app/components/DeleteIssueButton'
+import Button from '@/app/components/ui/Button'
 
 const IssuePage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
@@ -62,12 +63,12 @@ const IssuePage = async ({ params }: { params: Promise<{ id: string }> }) => {
           <h1 className="text-3xl font-bold">{title}</h1>
           <div className="flex items-center space-x-2">
             <Link href={`/issues/${id}/edit`}>
-              <button className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200 mb-4">
+            <Button variant="outline" size="sm">
                 <span className="flex items-center">
                   <Edit2Icon size={16} className="mr-1" />
                   Edit
                 </span>
-              </button>
+              </Button>
             </Link>
             <DeleteIssueButton id={parseInt(id)} />
           </div>
