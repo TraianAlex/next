@@ -37,16 +37,22 @@ export default async function Navigation() {
             Docs
           </Link>
           <Link
-            href='/about'
+            href='/features'
             className='text-base font-medium text-zinc-900 transition-colors hover:text-zinc-600 dark:text-zinc-50 dark:hover:text-zinc-300'
           >
-            About
+            Features
           </Link>
           <Link
             href="/pricing"
             className="text-base font-medium hover:text-purple-600"
           >
             Pricing
+          </Link>
+          <Link
+            href="/faq"
+            className="text-base font-medium hover:text-purple-600"
+          >
+            FAQ
           </Link>
         </div>
         <div className='flex items-center gap-8'>
