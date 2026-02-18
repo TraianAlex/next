@@ -42,6 +42,12 @@ export default async function Navigation() {
           >
             About
           </Link>
+          <Link
+            href="/pricing"
+            className="text-base font-medium hover:text-purple-600"
+          >
+            Pricing
+          </Link>
         </div>
         <div className='flex items-center gap-8'>
           {!user ? (

@@ -1,7 +1,30 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 import Button from '../components/ui/Button';
+import { getCurrentUser } from '@/lib/dal';
 import { Timestamp } from '../components/Timestamp';
+
+async function AuthButtons() {
+  const user = await getCurrentUser();
+
+  if (user) {
+    return (
+      <div className="mt-10">
+        <Link href="/dashboard">
+          <Button size="lg">Go to Dashboard</Button>
+        </Link>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-10">
+      <Link href="/signup">
+        <Button size="lg">Get Started</Button>
+      </Link>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -19,16 +42,14 @@ export default function Home() {
               A minimal and elegant issue tracking tool for modern teams. Manage
               your projects with ease.
             </p>
-            <div className="mt-10">
-              <Link href="/signup">
-                <Button size="lg">Get Started</Button>
-              </Link>
-            </div>
+            <Suspense fallback={<div className="mt-10 h-11" />}>
+              <AuthButtons />
+            </Suspense>
           </div>
         </div>
       </main>
 
-      <footer className="border-t border-gray-200 dark:border-dark-border-subtle">
+      <footer className="border-t border-zinc-200 dark:border-zinc-800 dark:bg-black/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
           <div className="text-center text-sm text-gray-500 dark:text-gray-400">
             <p>
@@ -36,7 +57,7 @@ export default function Home() {
               <Suspense fallback="...">
                 <Timestamp />
               </Suspense>{' '}
-              Mode. Built for Next.js Fundamentals.
+              Built with Next.js and Tailwind CSS.
             </p>
           </div>
         </div>
