@@ -77,7 +77,7 @@ export default function MainLayout({
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="/docs"
+                    href="/docs/getting-started"
                     className="text-sm text-gray-600 hover:text-purple-600"
                   >
                     Documentation
@@ -85,7 +85,7 @@ export default function MainLayout({
                 </li>
                 <li>
                   <a
-                    href="https://github.com/TraianAlex/todos"
+                    href="https://github.com/TraianAlex/next"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-gray-600 hover:text-purple-600"
