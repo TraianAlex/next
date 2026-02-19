@@ -51,7 +51,7 @@ export const signIn = async (formData: FormData): Promise<ActionResponse> => {
       return {
         success: false,
         message: 'Validation failed',
-        errors: validationResult.error.flatten().fieldErrors,
+        errors: z.flattenError(validationResult.error).fieldErrors,
       }
     }
 
@@ -109,8 +109,8 @@ export const signUp = async (formData: FormData) => {
     if (!validationResult.success) {
       return {
         success: false,
-        message: 'Validation faild',
-        errors: validationResult.error.flatten().fieldErrors,
+        message: 'Validation failed',
+        errors: z.flattenError(validationResult.error).fieldErrors,
       }
     }
 

@@ -54,7 +54,7 @@ export const createIssue = async (data: IssueData) => {
       return {
         success: false,
         message: 'Validation failed',
-        errors: validationResult.error.flatten().fieldErrors,
+        errors: z.flattenError(validationResult.error).fieldErrors,
       }
     }
 
@@ -99,7 +99,7 @@ export const updateIssue = async (id: number, data: Partial<IssueData>): Promise
       return {
         success: false,
         message: 'Invalid issue',
-        errors: validationResult.error.flatten().fieldErrors,
+        errors: z.flattenError(validationResult.error).fieldErrors,
       }
     }
 
