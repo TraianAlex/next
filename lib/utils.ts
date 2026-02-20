@@ -13,7 +13,6 @@ export function formatRelativeTime(date: Date | string) {
   return formatDistanceToNow(parsedDate, { addSuffix: true })
 }
 
-// Simple validation check for email
 export function isValidEmail(email: string) {
   return /\S+@\S+\.\S+/.test(email)
 }

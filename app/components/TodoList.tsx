@@ -16,7 +16,6 @@ export interface Todo {
 
 const STORAGE_KEY = 'todos-app-data'
 
-// Load todos from localStorage
 function loadTodosFromStorage(): Todo[] {
   if (typeof window === 'undefined') return []
   const stored = localStorage.getItem(STORAGE_KEY)
@@ -156,7 +155,6 @@ export default function TodoList() {
         </button>
       </div>
 
-      {/* Add Form */}
       {isAdding && (
         <TodoForm
           title={formData.title}
@@ -173,7 +171,6 @@ export default function TodoList() {
         />
       )}
 
-      {/* Todos List */}
       {todos.length === 0 ? (
         <div className="bg-gray-900 dark:bg-gray-900 flex flex-col items-center justify-center py-12 text-center border border-gray-500 dark:border-dark-border-default rounded-lg bg-white dark:bg-dark-high p-8">
           <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-gray-100">

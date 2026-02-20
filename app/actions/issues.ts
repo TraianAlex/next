@@ -3,12 +3,10 @@
 import { db } from '@/db'
 import { issues } from '@/db/schema'
 import { eq } from 'drizzle-orm'
-import { getCurrentUser } from '@/lib/dal'
+import { authorizeUserToEditIssue, getCurrentUser } from '@/lib/dal'
 import { z } from 'zod'
-// import { mockDelay } from '@/lib/utils'
 import { revalidateTag } from 'next/cache'
 
-// Define Zod schema for issue validation
 const IssueSchema = z.object({
   title: z
     .string()
@@ -38,7 +36,6 @@ export type ActionResponse = {
 
 export const createIssue = async (data: IssueData) => {
   try {
-    // Security check - ensure user is authenticated
     const user = await getCurrentUser()
     if (!user) {
       return {
@@ -48,7 +45,6 @@ export const createIssue = async (data: IssueData) => {
       }
     }
 
-    // Validate with Zod
     const validationResult = IssueSchema.safeParse(data)
     if (!validationResult.success) {
       return {
@@ -58,7 +54,6 @@ export const createIssue = async (data: IssueData) => {
       }
     }
 
-    // Create issue with validated data
     const validatedData = validationResult.data
     await db.insert(issues).values({
       title: validatedData.title,
@@ -92,6 +87,15 @@ export const updateIssue = async (id: number, data: Partial<IssueData>): Promise
       }
     }
 
+    const isAuthorized = await authorizeUserToEditIssue(user.id, id)
+    if (!isAuthorized) {
+      return {
+        success: false,
+        message: 'Unauthorized access',
+        error: 'Unauthorized',
+      }
+    }
+
     const UpdateSchema = IssueSchema.partial()
     const validationResult = UpdateSchema.safeParse(data)
 
@@ -116,7 +120,6 @@ export const updateIssue = async (id: number, data: Partial<IssueData>): Promise
     if (validatedData.priority !== undefined)
       updateData.priority = validatedData.priority
 
-    // Update issue
     await db.update(issues).set(updateData).where(eq(issues.id, id))
 
     revalidateTag('issues', {expire: 0})
@@ -133,14 +136,20 @@ export const updateIssue = async (id: number, data: Partial<IssueData>): Promise
 
 export async function deleteIssue(id: number) {
   try {
-    // Security check - ensure user is authenticated
-    // await mockDelay(700)
     const user = await getCurrentUser()
     if (!user) {
       throw new Error('Unauthorized')
     }
 
-    // Delete issue
+    const isAuthorized = await authorizeUserToEditIssue(user.id, id)
+    if (!isAuthorized) {
+      return {
+        success: false,
+        message: 'Unauthorized access',
+        error: 'Unauthorized',
+      }
+    }
+
     await db.delete(issues).where(eq(issues.id, id))
 
     revalidateTag('issues', {expire: 0})

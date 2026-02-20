@@ -10,7 +10,6 @@ export const statusEnum = pgEnum('status', [
 ])
 export const priorityEnum = pgEnum('priority', ['low', 'medium', 'high'])
 
-// Issues table
 export const issues = pgTable('issues', {
   id: serial('id').primaryKey(),
   title: text('title').notNull(),
@@ -22,7 +21,6 @@ export const issues = pgTable('issues', {
   userId: text('user_id').notNull(),
 })
 
-// Users table
 export const users = pgTable('users', {
   id: text('id').primaryKey(),
   email: text('email').notNull().unique(),
@@ -30,7 +28,6 @@ export const users = pgTable('users', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 })
 
-// Relations between tables
 export const issuesRelations = relations(issues, ({ one }) => ({
   user: one(users, {
     fields: [issues.userId],
@@ -42,7 +39,6 @@ export const usersRelations = relations(users, ({ many }) => ({
   issues: many(issues),
 }))
 
-// Types
 export type Issue = InferSelectModel<typeof issues>
 export type User = InferSelectModel<typeof users>
 

@@ -10,13 +10,11 @@ import {
 import { getUserByEmail } from '@/lib/dal'
 import { redirect } from 'next/navigation'
 
-// Define Zod schema for signin validation
 const SignInSchema = z.object({
   email: z.string().min(1, 'Email is required').email('Invalid email format'),
   password: z.string().min(1, 'Password is required'),
 })
 
-// Define Zod schema for signup validation
 const SignUpSchema = z
   .object({
     email: z.string().min(1, 'Email is required').email('Invalid email format'),

@@ -37,12 +37,10 @@ export default function IssueForm({
 }: IssueFormProps) {
   const router = useRouter()
 
-  // Use useActionState hook for the form submission action
   const [state, formAction, isPending] = useActionState<
     ActionResponse,
     FormData
   >(async (prevState: ActionResponse, formData: FormData): Promise<ActionResponse> => {
-    // Extract data from form
     const data = {
       title: formData.get('title') as string,
       description: formData.get('description') as string,
@@ -56,12 +54,10 @@ export default function IssueForm({
     }
 
     try {
-      // Call the appropriate action based on whether we're editing or creating
       const result: ActionResponse = isEditing
         ? await updateIssue(Number(issue!.id), data)
         : await createIssue(data)
 
-      // Handle successful submission
       if (result.success) {
         router.refresh()
         if (!isEditing) {

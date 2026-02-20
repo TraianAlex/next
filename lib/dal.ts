@@ -79,3 +79,21 @@ export const getIssue = async (id: number) => {
     return null
   }
 }
+
+export const authorizeUserToEditIssue = async function authorizeIssue(
+  loggedInUserId: string,
+  issueId: number,
+): Promise<boolean> {
+  const response = await db
+    .select({
+      userId: issues.userId,
+    })
+    .from(issues)
+    .where(eq(issues.id, issueId));
+
+  if (!response.length) {
+    return false;
+  }
+
+  return response[0].userId === loggedInUserId;
+};
