@@ -49,9 +49,9 @@ export async function getIssues(userId: string) {
   try {
     await mockDelay(1000)
     const result = await db.query.issues.findMany({
-      with: {
-        user: true,
-      },
+      // with: {
+      //   user: true,
+      // },
       where: eq(issues.userId, userId),
       orderBy: (issues, { desc }) => [desc(issues.createdAt)],
     })

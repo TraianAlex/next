@@ -25,7 +25,15 @@ async function AuthSection() {
 
 export default function SideNavigationAuth() {
   return (
-    <Suspense fallback={null}>
+    <Suspense
+      fallback={
+        <div className='mt-auto border-t border-zinc-200 pt-4 dark:border-zinc-800'>
+          <div className="flex items-center justify-start px-2 py-2">
+            <span className="inline-block size-4 shrink-0 animate-spin rounded-full border-2 border-gray-400 border-t-transparent dark:border-gray-200 dark:border-t-transparent" />
+          </div>
+        </div>
+      }
+    >
       <AuthSection />
     </Suspense>
   );

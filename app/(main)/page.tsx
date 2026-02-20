@@ -42,7 +42,7 @@ export default function Home() {
               A minimal and elegant issue tracking tool for modern teams. Manage
               your projects with ease.
             </p>
-            <Suspense fallback={<div className="mt-10 h-11" />}>
+            <Suspense fallback={<span className="inline-block size-4 animate-spin rounded-full border-2 border-gray-400 border-t-transparent dark:border-gray-200 dark:border-t-transparent" />}>
               <AuthButtons />
             </Suspense>
           </div>
