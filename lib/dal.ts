@@ -68,6 +68,7 @@ export const getIssue = async (id: number) => {
     await mockDelay(700)
     const issue = await db.query.issues.findFirst({
       where: eq(issues.id, id),
+      // left join user table
       with: {
         user: true,
       },
