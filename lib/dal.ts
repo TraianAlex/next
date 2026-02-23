@@ -1,10 +1,7 @@
 import { db } from '@/db'
 import { eq } from 'drizzle-orm'
 import { cache } from 'react'
-import {
-  cacheTag,
-  // unstable_cacheLife as cacheLife,
-} from 'next/cache'
+import { cacheLife, cacheTag } from 'next/cache'
 
 import { getSession } from './auth'
 import { issues, users } from '@/db/schema'
@@ -56,6 +53,7 @@ export async function getIssues(userId: string) {
       orderBy: (issues, { desc }) => [desc(issues.createdAt)],
     })
 
+    cacheLife('weeks');
     return result
   } catch (error) {
     console.error('Error fetching issues:', error)
