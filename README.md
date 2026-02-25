@@ -11,3 +11,9 @@ bun dev
 ```
 
 https://next-iota-blush.vercel.app/
+
+add test
+
+npm install -D vitest @vitejs/plugin-react vite-tsconfig-paths @testing-library/react @testing-library/dom jsdom @testing-library/jest-dom
+
+local dev alex@app.com 123456
